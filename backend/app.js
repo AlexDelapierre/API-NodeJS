@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const app = express();
+
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = "mongodb+srv://Alex:uVnzgp0XqhuW0Wug@cluster0.uj09drm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
@@ -27,12 +27,7 @@ async function run() {
 }
 run().catch(console.dir);
 
-
-// mongoose.connect('mongodb+srv://Alex:<uVnzgp0XqhuW0Wug>@cluster0.uj09drm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
-//   { useNewUrlParser: true,
-//     useUnifiedTopology: true })
-//   .then(() => console.log('Connexion à MongoDB réussie !'))
-//   .catch(() => console.log('Connexion à MongoDB échouée !'));
+const app = express();
 
 app.use(express.json());   
 
