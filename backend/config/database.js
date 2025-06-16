@@ -1,4 +1,7 @@
 require('dotenv').config(); // Charger les variables d'environnement
+
+/*
+// driver MongoDB natif (MongoClient)
 const { MongoClient, ServerApiVersion } = require('mongodb');
 
 // Récupérer l'URI depuis les variables d'environnement
@@ -27,3 +30,25 @@ module.exports = {
   connectToDatabase,
   client
 };
+*/
+
+// Connexion avec Mongoose
+const mongoose = require('mongoose');
+
+async function connectToDatabase() {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log('✅ Connexion à MongoDB réussie !');
+  } catch (error) {
+    console.error('❌ Échec de la connexion à MongoDB :', error);
+    throw error; // remonte l'erreur pour stopper le lancement si connexion impossible
+  }
+}
+
+module.exports = {
+  connectToDatabase
+};
+

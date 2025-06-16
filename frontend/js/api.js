@@ -1,5 +1,5 @@
 // api.js
-const API_BASE_URL = "http://localhost:3000/api/stuff";
+const API_BASE_URL = "http://localhost:3001/api/stuff";
 
 // Fonction générique pour toutes les requêtes API
 async function request(endpoint, options = {}) {
@@ -32,13 +32,14 @@ export async function getObjets() {
     return await request("", { method: "GET" });
 }
 
-export async function getObjet(id) {
-    return await request(`${id}`, { method: "GET" });
+// Récupérer un objet en fonction de son ID
+export async function getObjetById(id) {
+    return await request(`/${id}`, { method: "GET" });
 }
 
 // Ajouter un objet
 export async function ajouterObjet(objet) {
-    const response = await fetch('http://localhost:3000/api/stuff', {
+    const response = await fetch('http://localhost:3001/api/stuff', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(objet)

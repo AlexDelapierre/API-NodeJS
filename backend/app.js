@@ -1,53 +1,63 @@
-require('dotenv').config(); // Très important de le mettre tout en haut
-
 const express = require('express');
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
 const Thing = require('./models/Thing');
+const { connectToDatabase } = require('./config/database');
 
 const app = express();
-// middleware qui donne accès au corps de la requête avec req.body
 app.use(express.json());
 
-const { connectToDatabase } = require('./config/database'); 
-
-connectToDatabase();
-
-// Cross Origin Resource Sharing
+// CORS
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization'
+  );
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
   next();
 });
 
-app.post('/api/stuff', (req, res, next) => {
-  console.log(req.body);
-  res.status(201).json({
-    message: 'Objet créé !'
+// Routes
+app.post('/api/stuff', (req, res) => {
+  const thing = new Thing({
+    ...req.body
   });
-}); 
 
-app.get('/api/stuff', (req, res, next) => {
-  const stuff = [
-    {
-      _id: 'oeihfzeoi',
-      title: 'Mon premier objet',
-      description: 'Les infos de mon premier objet',
-      imageUrl: 'https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg',
-      price: 4900,
-      userId: 'qsomihvqios',
-    },
-    {
-      _id: 'oeihfzeomoihi',
-      title: 'Mon deuxième objet',
-      description: 'Les infos de mon deuxième objet',
-      imageUrl: 'https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg',
-      price: 2900,
-      userId: 'qsomihvqios',
-    },
-  ];
-  res.status(200).json(stuff);
+  thing
+    .save()
+    .then(() => res.status(201).json({ message: 'Objet enregistré en base de données !' }))
+    .catch((error) => {
+      console.error('Erreur lors de l\'enregistrement :', error);
+      res.status(400).json({ error });
+    });
 });
+
+app.get('/api/stuff', (req, res) => {
+  Thing.find()
+    .then(things => res.status(200).json(things))
+    .catch(error => res.status(400).json({ error }));
+});
+
+app.get('/api/stuff/:id', (req, res) => {
+  Thing.findOne({ _id: req.params.id })
+    .then(thing => {
+      if (!thing) {
+        return res.status(404).json({ message: 'Objet non trouvé' });
+      }
+      res.status(200).json(thing);
+    })
+    .catch(error => res.status(400).json({ error }));
+});
+
+
+// Lancement serveur uniquement après connexion à la base réussie
+connectToDatabase()
+  .then(() => {
+    app.listen(3000, () => {
+      console.log('Serveur lancé sur le port 3001');
+    });
+  })
+  .catch((error) => {
+    console.error('Impossible de démarrer le serveur, erreur de connexion à la DB :', error);
+  });
 
 module.exports = app;

@@ -1,22 +1,14 @@
-import { getObjets, ajouterObjet } from './api.js';
+import { loadNavbar } from './navbar.js';
+import * as api from './api.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     loadNavbar();
     chargerObjets();
 });
 
-function loadNavbar() {
-    fetch('./navbar.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('navbar-placeholder').innerHTML = data;
-        })
-        .catch(error => console.error('Erreur lors du chargement de la navbar:', error));
-}
-
 async function chargerObjets() {
     try {
-        const objets = await getObjets();
+        const objets = await api.getObjets();
         afficherObjets(objets);
     } catch (err) {
         console.error("Impossible de charger les objets", err);
@@ -32,6 +24,7 @@ function afficherObjets(objets) {
         card.classList.add('objet-card');
 
         card.innerHTML = `
+            <a href="detail.html?id=${objet._id}">
             <img src="${objet.imageUrl}" alt="${objet.title}">
             <div class="content">
                 <h3>${objet.title}</h3>
@@ -43,3 +36,8 @@ function afficherObjets(objets) {
         container.appendChild(card);
     });
 }
+
+
+
+
+
