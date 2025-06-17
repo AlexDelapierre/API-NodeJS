@@ -1,7 +1,7 @@
 require('dotenv').config(); // Charger les variables d'environnement
 
 /*
-// driver MongoDB natif (MongoClient)
+// ------------ avec driver MongoDB natif (MongoClient) ---------------------------
 const { MongoClient, ServerApiVersion } = require('mongodb');
 
 // Récupérer l'URI depuis les variables d'environnement

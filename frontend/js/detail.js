@@ -25,13 +25,18 @@ async function chargerObjetDetail(id) {
 function afficherObjetDetail(objet) {
     const container = document.getElementById('detail-container');
     container.innerHTML = `
-        <div class="objet-detail">
+        <div class="card">
             <img src="${objet.imageUrl}" alt="${objet.title}">
-            <div class="content">
+            <div class="card-content">
                 <h3>${objet.title}</h3>
                 <p>${objet.description}</p>
                 <p class="price">${(objet.price / 100).toFixed(2)} €</p>
             </div>
+            <div class="card-buttons">
+                <button class="btn-edit">Modifier</button>
+                <button class="btn-delete">Supprimer</button>
+            </div>
         </div>
     `;
 }
+

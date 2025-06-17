@@ -1,18 +1,23 @@
 const http = require('http');
 const app = require('./app');
+const { connectToDatabase } = require('./config/database');
 
 const normalizePort = val => {
   const port = parseInt(val, 10);
-
-  if (isNaN(port)) {
-    return val;
-  }
-  if (port >= 0) {
-    return port;
-  }
-  return false;
+   
+  // if (isNaN(port)) {
+  //   return val;
+  // }
+  // if (port >= 0) {
+  //   return port;
+  // }
+  // return false;
+  
+  // opérateur ternaire imbriqué (équivalent du if)
+  return isNaN(port) ? val : port >= 0 ? port : false;
 };
-const port = normalizePort(process.env.PORT || '3001');
+
+const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 const errorHandler = error => {
@@ -44,4 +49,11 @@ server.on('listening', () => {
   console.log('Listening on ' + bind);
 });
 
-server.listen(port);
+// Connexion à MongoDB et lancement du serveur
+connectToDatabase()
+  .then(() => {
+    server.listen(port);
+  })
+  .catch((error) => {
+    console.error('❌ Impossible de démarrer le serveur (connexion DB échouée) :', error);
+  });

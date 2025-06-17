@@ -1,6 +1,5 @@
 const express = require('express');
 const Thing = require('./models/Thing');
-const { connectToDatabase } = require('./config/database');
 
 const app = express();
 app.use(express.json());
@@ -47,17 +46,5 @@ app.get('/api/stuff/:id', (req, res) => {
     })
     .catch(error => res.status(400).json({ error }));
 });
-
-
-// Lancement serveur uniquement après connexion à la base réussie
-connectToDatabase()
-  .then(() => {
-    app.listen(3000, () => {
-      console.log('Serveur lancé sur le port 3001');
-    });
-  })
-  .catch((error) => {
-    console.error('Impossible de démarrer le serveur, erreur de connexion à la DB :', error);
-  });
 
 module.exports = app;
