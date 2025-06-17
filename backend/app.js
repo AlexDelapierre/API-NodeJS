@@ -47,4 +47,19 @@ app.get('/api/stuff/:id', (req, res) => {
     .catch(error => res.status(400).json({ error }));
 });
 
+app.put('/api/stuff/:id', (req, res) => {
+  Thing.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+    .then(updatedThing => {
+      if (!updatedThing) {
+        return res.status(404).json({ message: 'Objet non trouvé' });
+      }
+      res.status(200).json(updatedThing);
+    })
+    .catch(error => {
+      console.error('Erreur lors de la mise à jour :', error);
+      res.status(400).json({ error });
+    });
+});
+
+
 module.exports = app;

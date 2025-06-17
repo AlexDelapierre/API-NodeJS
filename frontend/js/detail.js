@@ -38,5 +38,26 @@ function afficherObjetDetail(objet) {
             </div>
         </div>
     `;
-}
 
+    // Sélectionne les boutons une fois insérés dans le DOM
+    const btnEdit = container.querySelector('.btn-edit');
+    const btnDelete = container.querySelector('.btn-delete');   
+
+    // Événements
+    btnEdit.addEventListener('click', () => {
+        window.location.href = `ajout.html?id=${objet._id}`;
+    });
+
+    btnDelete.addEventListener('click', async () => {
+        if (confirm("Êtes-vous sûr de vouloir supprimer cet objet ?")) {
+            try {
+                await api.supprimerObjet(objet._id);
+                alert("Objet supprimé avec succès.");
+                window.location.href = "index.html"; // ou une autre page
+            } catch (err) {
+                alert("Erreur lors de la suppression.");
+                console.error(err);
+            }
+        }
+    });
+}

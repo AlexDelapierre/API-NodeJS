@@ -59,7 +59,22 @@ export async function ajouterObjet(objet) {
     }
     return await response.json();
 }
-*/  
+*/
+
+export async function updateObjet(id, objet) {
+    const response = await fetch(`http://localhost:3000/api/stuff/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(objet)
+    });
+
+    if (!response.ok) {
+        throw new Error('Erreur lors de la mise à jour de l’objet');
+    }
+
+    return await response.json();
+}
+
 
 export async function supprimerObjet(id) {
     return await request(`${id}`, { method: "DELETE" });
