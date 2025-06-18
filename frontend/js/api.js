@@ -77,5 +77,5 @@ export async function updateObjet(id, objet) {
 
 
 export async function supprimerObjet(id) {
-    return await request(`${id}`, { method: "DELETE" });
+    return await request(`/${id}`, { method: "DELETE" });
 }

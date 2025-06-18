@@ -16,20 +16,6 @@ app.use((req, res, next) => {
 });
 
 // Routes
-app.post('/api/stuff', (req, res) => {
-  const thing = new Thing({
-    ...req.body
-  });
-
-  thing
-    .save()
-    .then(() => res.status(201).json({ message: 'Objet enregistré en base de données !' }))
-    .catch((error) => {
-      console.error('Erreur lors de l\'enregistrement :', error);
-      res.status(400).json({ error });
-    });
-});
-
 app.get('/api/stuff', (req, res) => {
   Thing.find()
     .then(things => res.status(200).json(things))
@@ -47,6 +33,17 @@ app.get('/api/stuff/:id', (req, res) => {
     .catch(error => res.status(400).json({ error }));
 });
 
+app.post('/api/stuff', (req, res) => {
+  const thing = new Thing({...req.body});
+  thing.save()
+    .then(() => res.status(201).json({ message: 'Objet enregistré en base de données !' }))
+    .catch((error) => {
+      console.error('Erreur lors de l\'enregistrement :', error);
+      res.status(400).json({ error });
+    });
+});
+
+// Update endpoint avec Thing.findByIdAndUpdate()
 app.put('/api/stuff/:id', (req, res) => {
   Thing.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
     .then(updatedThing => {
@@ -61,5 +58,17 @@ app.put('/api/stuff/:id', (req, res) => {
     });
 });
 
+// Update endpoint avec Thing.updateOne()
+// app.put('/api/stuff/:id', (req, res, next) => {
+//   Thing.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
+//     .then(() => res.status(200).json({ message: 'Objet modifié !'}))
+//     .catch(error => res.status(400).json({ error }));
+// });
+
+app.delete('/api/stuff/:id', (req, res, next) => {
+  Thing.deleteOne({ _id: req.params.id })
+    .then(() => res.status(200).json({ message: 'Objet supprimé !'}))
+    .catch(error => res.status(400).json({ error }));
+});
 
 module.exports = app;

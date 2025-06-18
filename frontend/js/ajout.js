@@ -59,10 +59,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (idObjet) {
             await updateObjet(idObjet, objet);
             message.textContent = "Objet mis à jour avec succès !";
+            window.location.href = "index.html"; 
         } else {
             await ajouterObjet(objet);
             message.textContent = "Objet ajouté avec succès !";
             form.reset(); // seulement si succès
+            window.location.href = "index.html"; 
         }
             message.style.color = "green";
         } catch (error) {
