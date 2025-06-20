@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const User = require('../models/user');
 
 exports.signup = (req, res, next) => {
+    console.log("Reçu depuis le frontend :", req.body);  
   bcrypt.hash(req.body.password, 10)
     .then(hash => {
       const user = new User({

@@ -1,4 +1,5 @@
 import { loadNavbar } from './navbar.js';
+import { login } from './api.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     loadNavbar();
@@ -14,11 +15,13 @@ form.addEventListener('submit', async (e) => {
   const password = document.getElementById('password').value;
 
   try {
-    const response = await fetch('http://localhost:3000/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
-    });
+    const response = await login(email, password);
+
+    // const response = await fetch('http://localhost:3000/api/auth/login', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify({ email, password })
+    // });
 
     const data = await response.json();
 

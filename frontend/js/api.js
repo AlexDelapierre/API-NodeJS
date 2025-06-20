@@ -1,5 +1,4 @@
-// api.js
-const API_BASE_URL = "http://localhost:3000/api/stuff";
+const API_BASE_URL = "http://localhost:3000/api";
 
 // Fonction générique pour toutes les requêtes API
 async function request(endpoint, options = {}) {
@@ -29,18 +28,18 @@ async function request(endpoint, options = {}) {
 
 // Récupérer tous les objets
 export async function getObjets() {
-    return await request("", { method: "GET" });
+    return await request("/stuff", { method: "GET" });
 }
 
 // Récupérer un objet en fonction de son ID
 export async function getObjetById(id) {
-    return await request(`/${id}`, { method: "GET" });
+    return await request(`/stuff/${id}`, { method: "GET" });
 }
 
 
 // Ajouter un objet
 export async function ajouterObjet(objet) {
-    return await request("", {
+    return await request("/stuff", {
         method: "POST",
         body: JSON.stringify(objet)
     });
@@ -75,7 +74,31 @@ export async function updateObjet(id, objet) {
     return await response.json();
 }
 
+// Modifier un objet avec la fonction générique request()
+// export async function updateObjet(id, objet) {
+//     return await request(`/stuff/${id}`, {
+//         method: "PUT",
+//         body: JSON.stringify(objet)
+//     });
+// }
 
 export async function supprimerObjet(id) {
-    return await request(`/${id}`, { method: "DELETE" });
+    return await request(`/stuff/${id}`, { method: "DELETE" });
 }
+
+// Créer un nouvel utilisateur (inscription)
+export async function signup(email, password) {
+    return await request("/auth/signup", {
+        method: "POST",
+        body: JSON.stringify({ email, password })
+    });
+}
+
+// Connexion de l'utilisateur
+export async function login(email, password) {
+    return await request("/auth/login", {
+        method: "POST",
+        body: JSON.stringify({ email, password })
+    });
+}
+
