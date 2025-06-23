@@ -14,29 +14,45 @@ form.addEventListener('submit', async (e) => {
   const email = document.getElementById('email').value.trim();
   const password = document.getElementById('password').value;
 
+  // try {
+  //    const response = await fetch('http://localhost:3000/api/auth/login', {
+  //      method: 'POST',
+  //      headers: { 'Content-Type': 'application/json' },
+  //      body: JSON.stringify({ email, password })
+  //    });
+
+  //   if (response.ok && data.token) {
+  //     localStorage.setItem('token', data.token);
+  //     messageDiv.textContent = 'Connexion réussie !';
+  //     messageDiv.style.color = 'green';
+  //     // Rediriger ou charger une page sécurisée :
+  //     window.location.href = 'index.html';
+  //   } else {
+  //     messageDiv.textContent = data.error || 'Identifiants invalides.';
+  //     messageDiv.style.color = 'red';
+  //   }
+  // } catch (err) {
+  //   messageDiv.textContent = 'Erreur réseau. Veuillez réessayer.';
+  //   messageDiv.style.color = 'red';
+  // }
+
   try {
-    const response = await login(email, password);
+    const data = await login(email, password); // login() retourne directement les données JSON
 
-    // const response = await fetch('http://localhost:3000/api/auth/login', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({ email, password })
-    // });
-
-    const data = await response.json();
-
-    if (response.ok && data.token) {
+    if (data.token) {
       localStorage.setItem('token', data.token);
       messageDiv.textContent = 'Connexion réussie !';
       messageDiv.style.color = 'green';
-      // Rediriger ou charger une page sécurisée :
-      window.location.href = 'index.html';
+      window.location.href = 'index.html'; // Redirection vers page protégée
     } else {
-      messageDiv.textContent = data.error || 'Identifiants invalides.';
+      messageDiv.textContent = 'Identifiants invalides.';
       messageDiv.style.color = 'red';
     }
   } catch (err) {
-    messageDiv.textContent = 'Erreur réseau. Veuillez réessayer.';
+    messageDiv.textContent =
+      err.message?.includes('401')
+        ? 'Identifiants incorrects.'
+        : 'Erreur réseau. Veuillez réessayer.';
     messageDiv.style.color = 'red';
   }
 });
