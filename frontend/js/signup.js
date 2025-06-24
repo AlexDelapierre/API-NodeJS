@@ -35,14 +35,37 @@ document.addEventListener('DOMContentLoaded', () => {
     //   messageDiv.style.color = 'red';
     // }
 
-    try {
-      const data = await signup(email, password);  // Si erreur, elle sera catchée
+    // try {
+    //   const data = await signup(email, password);  // Si erreur, elle sera catchée
+    //   window.location.href = 'index.html'; // Redirection vers page protégée
+    //   messageDiv.textContent = 'Inscription réussie ! Vous pouvez maintenant vous connecter.';
+    //   messageDiv.style.color = 'green';
+    //   form.reset();
+    // } catch (err) {
+    //   // On affiche une erreur personnalisée si disponible
+    //   messageDiv.textContent =
+    //     err.message?.includes('Erreur HTTP')
+    //       ? 'Erreur lors de l’inscription. Vérifiez vos informations.'
+    //       : err.message || 'Erreur réseau. Veuillez réessayer.';
+    //   messageDiv.style.color = 'red';
+    // }
 
-      messageDiv.textContent = 'Inscription réussie ! Vous pouvez maintenant vous connecter.';
+    try {
+      const data = await signup(email, password); // Appel à l'API
+
+      // Stockage du token JWT dans le localStorage
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('userId', data.userId);
+
+      // Affichage message
+      messageDiv.textContent = 'Inscription réussie ! Redirection en cours...';
       messageDiv.style.color = 'green';
-      form.reset();
+
+      // Redirection vers la page d'accueil
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 1000); // Petite pause pour laisser voir le message
     } catch (err) {
-      // On affiche une erreur personnalisée si disponible
       messageDiv.textContent =
         err.message?.includes('Erreur HTTP')
           ? 'Erreur lors de l’inscription. Vérifiez vos informations.'

@@ -3,8 +3,11 @@ const API_BASE_URL = "http://localhost:3000/api";
 // Fonction générique pour toutes les requêtes API
 async function request(endpoint, options = {}) {
     const url = `${API_BASE_URL}${endpoint}`;
+    const token = localStorage.getItem('token'); // récupère le token JWT
+
     const defaultHeaders = {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        ...(token && { Authorization: `Bearer ${token}` }) // ajoute le header si le token existe
     };
 
     const config = {

@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
 // exports.signup = (req, res, next) => {
@@ -16,17 +17,47 @@ const User = require('../models/user');
 //     .catch(error => res.status(500).json({ error }));
 // };
 
+// exports.signup = (req, res, next) => {
+//   console.log("Reçu depuis le frontend :", req.body);
+
+//   // Vérifier si l'utilisateur existe déjà
+//   User.findOne({ email: req.body.email })
+//     .then(existingUser => {
+//       if (existingUser) {
+//         return res.status(400).json({ message: "Cet email est déjà utilisé." });
+//       }
+
+//       // Hachage du mot de passe
+//       return bcrypt.hash(req.body.password, 10)
+//         .then(hash => {
+//           const user = new User({
+//             email: req.body.email,
+//             password: hash
+//           });
+
+//           return user.save();
+//         })
+//         .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
+//         .catch(error => {
+//           console.error("Erreur lors de l'enregistrement utilisateur :", error);
+//           res.status(400).json({ error });
+//         });
+//     })
+//     .catch(error => {
+//       console.error("Erreur lors de la vérification de l'email :", error);
+//       res.status(500).json({ error });
+//     });
+// };
+
 exports.signup = (req, res, next) => {
   console.log("Reçu depuis le frontend :", req.body);
 
-  // Vérifier si l'utilisateur existe déjà
   User.findOne({ email: req.body.email })
     .then(existingUser => {
       if (existingUser) {
         return res.status(400).json({ message: "Cet email est déjà utilisé." });
       }
 
-      // Hachage du mot de passe
       return bcrypt.hash(req.body.password, 10)
         .then(hash => {
           const user = new User({
@@ -36,7 +67,20 @@ exports.signup = (req, res, next) => {
 
           return user.save();
         })
-        .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
+        .then(savedUser => {
+          // Génération du token directement après création
+          const token = jwt.sign(
+            { userId: savedUser._id },
+            'RANDOM_TOKEN_SECRET', // 🔐 À remplacer par une clé secrète sécurisée dans un fichier .env
+            { expiresIn: '24h' }
+          );
+
+          res.status(201).json({
+            message: "Utilisateur créé et connecté !",
+            userId: savedUser._id,
+            token: token
+          });
+        })
         .catch(error => {
           console.error("Erreur lors de l'enregistrement utilisateur :", error);
           res.status(400).json({ error });
@@ -47,7 +91,6 @@ exports.signup = (req, res, next) => {
       res.status(500).json({ error });
     });
 };
-
 
 // signup() version async/await
 // exports.signup = async (req, res, next) => {
@@ -90,7 +133,11 @@ exports.login = (req, res, next) => {
                    }
                    res.status(200).json({
                        userId: user._id,
-                       token: 'TOKEN'
+                       token: jwt.sign(
+                           { userId: user._id },
+                           'RANDOM_TOKEN_SECRET',
+                           { expiresIn: '24h' }
+                       )
                    });
                })
                .catch(error => res.status(500).json({ error }));

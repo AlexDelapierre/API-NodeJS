@@ -2,12 +2,17 @@
     <div class="navbar-left">
         <h1>VendreMesObjets</h1>
         <nav>
-            <button onclick="location.href='index.html'">Objets à vendre</button>
-            <button onclick="location.href='ajout.html'">Vendre un objet</button>
+            <ul>
+                <li><a href="index.html">Objets à vendre</a></li>
+                <li><a href="ajout.html">Vendre un objet</a></li>
+            </ul>
         </nav>
     </div>
     <div class="navbar-right">
-        <button onclick="location.href='signup.html'">Inscription</button>
-        <button onclick="location.href='login.html'">Connexion</button>
+        <ul>
+            <li id="nav-signup"><a href="signup.html">Inscription</a></li>
+            <li id="nav-login"><a href="login.html">Connexion</a></li>
+            <li id="nav-logout" style="display: none;"><a href="#" id="logout-btn">Déconnexion</a></li>
+        </ul>
     </div>
 </header>
