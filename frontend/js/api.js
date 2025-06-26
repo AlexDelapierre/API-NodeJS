@@ -63,26 +63,26 @@ export async function ajouterObjet(objet) {
 }
 */
 
+// Modifier un objet avec la fonction générique request()
 export async function updateObjet(id, objet) {
-    const response = await fetch(`http://localhost:3000/api/stuff/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+    return await request(`/stuff/${id}`, {
+        method: "PUT",
         body: JSON.stringify(objet)
     });
-
-    if (!response.ok) {
-        throw new Error('Erreur lors de la mise à jour de l’objet');
-    }
-
-    return await response.json();
 }
 
-// Modifier un objet avec la fonction générique request()
 // export async function updateObjet(id, objet) {
-//     return await request(`/stuff/${id}`, {
-//         method: "PUT",
+//     const response = await fetch(`http://localhost:3000/api/stuff/${id}`, {
+//         method: 'PUT',
+//         headers: { 'Content-Type': 'application/json' },
 //         body: JSON.stringify(objet)
 //     });
+
+//     if (!response.ok) {
+//         throw new Error('Erreur lors de la mise à jour de l’objet');
+//     }
+
+//     return await response.json();
 // }
 
 export async function supprimerObjet(id) {
