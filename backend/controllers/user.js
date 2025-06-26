@@ -2,53 +2,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
-// exports.signup = (req, res, next) => {
-//     console.log("Reçu depuis le frontend :", req.body);  
-//   bcrypt.hash(req.body.password, 10)
-//     .then(hash => {
-//       const user = new User({
-//         email: req.body.email,
-//         password: hash
-//       });
-//       user.save()
-//         .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
-//         .catch(error => res.status(400).json({ error }));
-//     })
-//     .catch(error => res.status(500).json({ error }));
-// };
-
-// exports.signup = (req, res, next) => {
-//   console.log("Reçu depuis le frontend :", req.body);
-
-//   // Vérifier si l'utilisateur existe déjà
-//   User.findOne({ email: req.body.email })
-//     .then(existingUser => {
-//       if (existingUser) {
-//         return res.status(400).json({ message: "Cet email est déjà utilisé." });
-//       }
-
-//       // Hachage du mot de passe
-//       return bcrypt.hash(req.body.password, 10)
-//         .then(hash => {
-//           const user = new User({
-//             email: req.body.email,
-//             password: hash
-//           });
-
-//           return user.save();
-//         })
-//         .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
-//         .catch(error => {
-//           console.error("Erreur lors de l'enregistrement utilisateur :", error);
-//           res.status(400).json({ error });
-//         });
-//     })
-//     .catch(error => {
-//       console.error("Erreur lors de la vérification de l'email :", error);
-//       res.status(500).json({ error });
-//     });
-// };
-
 exports.signup = (req, res, next) => {
   console.log("Reçu depuis le frontend :", req.body);
 
@@ -71,7 +24,7 @@ exports.signup = (req, res, next) => {
           // Génération du token directement après création
           const token = jwt.sign(
             { userId: savedUser._id },
-            'RANDOM_TOKEN_SECRET', // 🔐 À remplacer par une clé secrète sécurisée dans un fichier .env
+            'RANDOM_TOKEN_SECRET', // À remplacer par une clé secrète sécurisée dans un fichier .env
             { expiresIn: '24h' }
           );
 
@@ -165,7 +118,7 @@ exports.login = (req, res, next) => {
 //     // Génération du token JWT
 //     const token = jwt.sign(
 //       { userId: user._id },
-//       'RANDOM_TOKEN_SECRET', // 🔐 À remplacer par une vraie clé secrète dans un fichier .env
+//       'RANDOM_TOKEN_SECRET', // À remplacer par une vraie clé secrète dans un fichier .env
 //       { expiresIn: '24h' }
 //     );
 
