@@ -52,8 +52,8 @@ function afficherObjetDetail(objet) {
         if (confirm("Êtes-vous sûr de vouloir supprimer cet objet ?")) {
             try {
                 await api.supprimerObjet(objet._id);
-                alert("Objet supprimé avec succès.");
                 window.location.href = "index.html"; 
+                // alert("Objet supprimé avec succès.");
             } catch (err) {
                 alert("Erreur lors de la suppression.");
                 console.error(err);
