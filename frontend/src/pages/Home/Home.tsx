@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { getObjets } from '../../services/api';
-import presentation from '../../assets/images/presentation.jpg';
 
 interface Objet {
   _id: string;
@@ -22,15 +21,13 @@ const Home = () => {
 
   return (
     <div>
-      <section className="hero">
-        <img src={presentation} alt="Présentation" style={{ width: '100%', objectFit: 'cover' }} />
-      </section>
+      <section className="hero"></section>
       <section className="categories">
         <div id="objets-container" className="objets-grid">
           {error && <p style={{color: 'red'}}>{error}</p>}
           {objets.map((objet) => (
             <div className="objet-card" key={objet._id}>
-              <a href={`detail.html?id=${objet._id}`}>
+              <a href={`/detail?id=${objet._id}`}> 
                 <img src={objet.imageUrl} alt={objet.title} />
                 <div className="content">
                   <h3>{objet.title}</h3>

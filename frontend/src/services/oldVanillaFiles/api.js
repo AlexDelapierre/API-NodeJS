@@ -140,7 +140,7 @@ export async function updateObjet(id, formData) {
 //     return await response.json();
 // }
 
-export async function supprimerObjet(id) {
+export async function deleteObjet(id) {
     return await request(`/stuff/${id}`, { method: "DELETE" });
 }
 

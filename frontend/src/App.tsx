@@ -6,8 +6,7 @@ import Ajout from './pages/Ajout/Ajout';
 import Detail from './pages/Detail/Detail';
 import Login from './pages/Login/Login';
 import Signup from './pages/Signup/Signup';
-import './assets/styles/global.css';
-import './App.css';
+// import './App.css';
 
 function App() {
   return (
@@ -16,9 +15,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/ajout" element={<Ajout />} />
-        <Route path="/detail" element={<Detail />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/detail" element={<Detail />} />
       </Routes>
     </Router>
   );

@@ -1,27 +1,7 @@
-import { useEffect, useState } from 'react';
-
-// À adapter selon vos services API
-// import { getObjetById, supprimerObjet } from '../../services/api';
-
-interface ObjetDetail {
-  _id: string;
-  title: string;
-  description: string;
-  price: number;
-  imageUrl: string;
-  userId: string;
-}
-
-const fetchObjetById = async (id: string): Promise<ObjetDetail> => {
-  const response = await fetch(`/api/objets/${id}`);
-  if (!response.ok) throw new Error('Erreur lors du chargement de l\'objet');
-  return response.json();
-};
-
-const deleteObjet = async (id: string) => {
-  const response = await fetch(`/api/objets/${id}`, { method: 'DELETE' });
-  if (!response.ok) throw new Error('Erreur lors de la suppression.');
-};
+import { useEffect, useState } from 'react'
+import { getObjetById, deleteObjet } from '../../services/api';
+import type { Objet } from '../../types/objet';
+import './detail.css';
 
 const getUserIdFromToken = (): string | null => {
   const token = localStorage.getItem('token');
@@ -35,7 +15,7 @@ const getUserIdFromToken = (): string | null => {
 };
 
 const Detail = () => {
-  const [objet, setObjet] = useState<ObjetDetail | null>(null);
+  const [objet, setObjet] = useState<Objet | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState<string | null>(null);
@@ -44,7 +24,7 @@ const Detail = () => {
     const params = new URLSearchParams(window.location.search);
     const idObjet = params.get('id');
     if (idObjet) {
-      fetchObjetById(idObjet)
+      getObjetById(idObjet)
         .then(setObjet)
         .catch(() => setError("Impossible de charger l'objet"))
         .finally(() => setLoading(false));

@@ -62,7 +62,7 @@ body {
 /* Hero Section */
 .hero {
     height: 50vh;
-    background-image: url('../assets/pictures/presentation.jpg'); /* Tu remplaceras par ton image */
+    background-image: url('../images/presentation.jpg'); /* Tu remplaceras par ton image */
     background-size: cover;
     background-position: center;
 }
