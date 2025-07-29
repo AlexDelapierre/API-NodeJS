@@ -1,19 +1,5 @@
 import { useState } from 'react';
-
-// À adapter selon vos services API
-// import { signup } from '../../services/api';
-
-const signupApi = async (email: string, password: string) => {
-  // À remplacer par votre appel API réel
-  const response = await fetch('/api/auth/signup', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password })
-  });
-  const data = await response.json();
-  if (!response.ok) throw new Error(data.error || 'Erreur lors de l’inscription.');
-  return data;
-};
+import { signup } from '../../services/api';
 
 const Signup = () => {
   const [email, setEmail] = useState('');
@@ -24,7 +10,7 @@ const Signup = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const data = await signupApi(email, password);
+      const data = await signup(email, password);
       localStorage.setItem('token', data.token);
       localStorage.setItem('userId', data.userId);
       setMessage("Inscription réussie ! Redirection en cours...");
