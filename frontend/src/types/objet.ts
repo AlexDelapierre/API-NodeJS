@@ -5,4 +5,5 @@ export interface Objet {
   price: number;
   imageUrl: string;
   userId: string;
+  image?: File | null; // Optionnel pour le formulaire d'ajout/édition
 }

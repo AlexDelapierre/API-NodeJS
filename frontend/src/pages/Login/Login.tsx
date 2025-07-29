@@ -1,19 +1,5 @@
 import { useState } from 'react';
-
-// À adapter selon vos services API
-// import { login } from '../../services/api';
-
-const loginApi = async (email: string, password: string) => {
-  // À remplacer par votre appel API réel
-  const response = await fetch('/api/auth/login', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password })
-  });
-  const data = await response.json();
-  if (!response.ok) throw new Error(data.error || 'Identifiants invalides.');
-  return data;
-};
+import { login } from '../../services/api';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -24,7 +10,7 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const data = await loginApi(email, password);
+      const data = await login(email, password);
       if (data.token) {
         localStorage.setItem('token', data.token);
         setMessage('Connexion réussie !');

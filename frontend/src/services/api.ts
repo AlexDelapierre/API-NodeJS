@@ -36,7 +36,7 @@ export async function getObjetById(id: string): Promise<Objet> {
     return await request(`/stuff/${id}`, { method: "GET" });
 }
 
-export async function ajouterObjet(formData: FormData): Promise<Objet> {
+export async function addObjet(formData: FormData): Promise<Objet> {
     return await request("/stuff", {
         method: "POST",
         body: formData
