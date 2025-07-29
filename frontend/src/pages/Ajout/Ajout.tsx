@@ -1,30 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
+import { ajouterObjet, updateObjet, getObjetById } from '../../services/api';
+import type { Objet } from '../../types/objet';
 
-// À adapter selon vos services API
-// import { ajouterObjet, getObjetById, updateObjet } from '../../services/api';
-
-interface ObjetForm {
-  title: string;
-  price: number;
-  description: string;
-  image?: File | null;
-}
-
-const fetchObjetById = async (id: string) => {
-  // À remplacer par votre appel API réel
-  const response = await fetch(`/api/objets/${id}`);
-  if (!response.ok) throw new Error('Erreur lors du chargement de l\'objet');
-  return response.json();
-};
-
-const sendObjet = async (formData: FormData, id?: string) => {
-  // À remplacer par votre appel API réel
-  const url = id ? `/api/objets/${id}` : '/api/objets';
-  const method = id ? 'PUT' : 'POST';
-  const response = await fetch(url, { method, body: formData });
-  if (!response.ok) throw new Error("Erreur lors de l'envoi du formulaire.");
-  return response.json();
-};
+type ObjetForm = Omit<Objet, '_id' | 'userId' | 'imageUrl'> & { image?: File | null };
 
 const Ajout = () => {
   const [message, setMessage] = useState<string | null>(null);
@@ -39,7 +17,7 @@ const Ajout = () => {
     const idObjet = params.get('id');
     if (idObjet) {
       setIsEdit(true);
-      fetchObjetById(idObjet)
+      getObjetById(idObjet)
         .then(objet => setForm({ title: objet.title, price: objet.price, description: objet.description, image: null }))
         .catch(() => {
           setMessage("Erreur lors du chargement de l'objet.");
@@ -68,8 +46,13 @@ const Ajout = () => {
     formData.append('userId', 'user-temporaire'); // à adapter plus tard
     if (form.image) formData.append('image', form.image);
     try {
-      await sendObjet(formData, idObjet || undefined);
-      setMessage(idObjet ? 'Objet mis à jour avec succès !' : 'Objet ajouté avec succès !');
+      if (idObjet) {
+        await updateObjet(idObjet, formData);
+        setMessage('Objet mis à jour avec succès !');
+      } else {
+        await ajouterObjet(formData);
+        setMessage('Objet ajouté avec succès !');
+      }
       setMessageColor('green');
       formRef.current?.reset();
       window.location.href = '/'; // Redirection vers la page d'accueil
