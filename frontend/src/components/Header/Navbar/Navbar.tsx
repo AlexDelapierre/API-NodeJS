@@ -25,7 +25,20 @@ const Navbar = () => {
         <nav>
           <ul>
             <li><Link to="/">Objets à vendre</Link></li>
-            <li><Link id="nav-addObject" to="/ajout">Vendre un objet</Link></li>
+            <li>
+              <Link
+                id="nav-addObject"
+                to={isLoggedIn ? "/ajout" : "/login"}
+                onClick={e => {
+                  if (!isLoggedIn) {
+                    e.preventDefault();
+                    navigate('/login');
+                  }
+                }}
+              >
+                Vendre un objet
+              </Link>
+            </li>
           </ul>
         </nav>
       </div>
