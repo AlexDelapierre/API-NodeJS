@@ -62,11 +62,11 @@ const Detail = () => {
   const estProprietaire = currentUserId && currentUserId === objet.userId;
 
   return (
-    <div className="detail-section">
+    <div>
       <div className="back-link">
         <a href="/">&laquo; Retour</a>
       </div>
-      <section id="detail-container">
+      <section id="detail-container" className="detail-section">
         <div className="card">
           <img src={objet.imageUrl} alt={objet.title} />
           <div className="card-content">
